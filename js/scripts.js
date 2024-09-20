@@ -82,6 +82,21 @@ function clearCalculator() {
 	updateResult(true);
 }
 
+function setPercentage() {
+	let result = Number(currentNumber) / 100;
+
+	if (["+", "-"].includes(operator)) {
+		result = result * (firstOperand || 1);
+	}
+
+	if (result.toString().split(".")[1]?.length > 5) {
+		result = result.toFixed(5).toString();
+	}
+
+	currentNumber = result.toString();
+	updateResult();
+}
+
 buttons.forEach((button) => {
 	button.addEventListener("click", () => {
 		const buttonText = button.innerText;
@@ -96,6 +111,8 @@ buttons.forEach((button) => {
 		} else if (buttonText === "±") {
 			currentNumber = (Number(currentNumber || firstOperand) * -1).toString();
 			updateResult();
+		} else if (buttonText === "%") {
+			setPercentage();
 		}
 	});
 });
