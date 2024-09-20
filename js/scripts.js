@@ -25,11 +25,65 @@ function addDigit(digit) {
 	updateResult();
 }
 
+function setOperator(newOperator) {
+	if (currentNumber) {
+		calculate();
+		firstOperand = Number(currentNumber.replace(",", "."));
+		currentNumber = "";
+	}
+
+	operator = newOperator;
+}
+
+function calculate() {
+	if (operator === null || firstOperand === null) return;
+
+	let secondOperand = Number(currentNumber.replace(",", "."));
+	let resultValue;
+
+	switch (operator) {
+		case "+":
+			resultValue = firstOperand + secondOperand;
+			break;
+
+		case "-":
+			resultValue = firstOperand - secondOperand;
+			break;
+
+		case "x":
+			resultValue = firstOperand * secondOperand;
+			break;
+
+		case "÷":
+			resultValue = firstOperand / secondOperand;
+			break;
+
+		default:
+			break;
+	}
+
+	if (resultValue.toString().split(".")[1]?.length > 5) {
+		currentNumber = Number(resultValue.toFixed(5)).toString();
+	} else {
+		currentNumber = resultValue.toString();
+	}
+
+	operator = null;
+	firstOperand = null;
+	restart = true;
+	percentageValue = null;
+	updateResult();
+}
+
 buttons.forEach((button) => {
 	button.addEventListener("click", () => {
 		const buttonText = button.innerText;
 		if (/^[0-9,]+$/.test(buttonText)) {
 			addDigit(buttonText);
+		} else if (["+", "-", "x", "÷"].includes(buttonText)) {
+			setOperator(buttonText);
+		} else if (buttonText === "=") {
+			calculate();
 		}
 	});
 });
