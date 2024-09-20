@@ -75,6 +75,13 @@ function calculate() {
 	updateResult();
 }
 
+function clearCalculator() {
+	currentNumber = "";
+	firstOperand = null;
+	operator = null;
+	updateResult(true);
+}
+
 buttons.forEach((button) => {
 	button.addEventListener("click", () => {
 		const buttonText = button.innerText;
@@ -84,6 +91,8 @@ buttons.forEach((button) => {
 			setOperator(buttonText);
 		} else if (buttonText === "=") {
 			calculate();
+		} else if (buttonText === "C") {
+			clearCalculator();
 		}
 	});
 });
