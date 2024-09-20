@@ -10,6 +10,21 @@ function updateResult(originClear = false) {
 	result.innerText = originClear ? 0 : currentNumber.replace(".", ",");
 }
 
+function addDigit(digit) {
+	if (digit === "," && (currentNumber.includes(",") || !currentNumber)) {
+		return;
+	}
+
+	if (restart) {
+		currentNumber = digit;
+		restart = false;
+	} else {
+		currentNumber += digit;
+	}
+
+	updateResult();
+}
+
 buttons.forEach((button) => {
 	button.addEventListener("click", () => {
 		const buttonText = button.innerText;
